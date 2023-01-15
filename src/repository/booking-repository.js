@@ -26,6 +26,12 @@ class bookingRepository {
       if (data.status) {
         response.status = data.status;
       }
+      if (data.noOfSeats) {
+        response.noOfSeats = data.noOfSeats;
+      }
+      if (data.totalCost) {
+        response.totalCost = data.totalCost;
+      }
       await response.save();
       return response;
     } catch (error) {
@@ -33,6 +39,20 @@ class bookingRepository {
         "repositoryError",
         "cannot update booking",
         "There is some error while booking,Please try again later",
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async get(bookingId) {
+    try {
+      const response = await Booking.findByPk(bookingId);
+      return response;
+    } catch (error) {
+      throw new appError(
+        "repositoryError",
+        "cannot get booking",
+        "There is some error while fetching booking,Please try again later",
         StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
